@@ -1,0 +1,663 @@
+<!doctype html>
+<html>
+
+<head>
+
+<meta charset="utf-8">
+
+<title>Choped</title>
+
+
+
+<!--links de la librería codemirror javascript, xml, css y html -->
+<script src="lib/lib/codemirror.js"></script>
+
+
+<link rel="stylesheet" href="lib/lib/codemirror.css">
+<link rel="stylesheet" href="lib/addon/display/fullscreen.css">
+<link rel="stylesheet" href="lib/theme/solarized.css">
+
+<link id="mimaquetacion" rel="stylesheet" type="text/css" href="editstyle.css">
+
+
+
+<script src="lib/mode/htmlmixed/htmlmixed.js"></script>
+<script src="lib/mode/xml/xml.js"></script>
+<script src="lib/mode/javascript/javascript.js"></script>
+<script src="lib/mode/css/css.js"></script>
+<script src="lib/addon/edit/matchbrackets.js"></script>
+<script src="lib/addon/selection/active-line.js"></script>
+<script src="lib/addon/display/rulers.js"></script>
+<script src="lib/keymap/sublime.js"></script>
+<script src="lib/addon/display/fullscreen.js"></script>
+
+<!--Codigo librería zepto, realentiza bastante la ejecución del código-->
+<script type="text/javascript" src="zepto.js"></script>
+
+<!--
+<script type="text/javascript" src="http://zeptojs.com/zepto.min.js"></script>
+-->
+
+<!--Código para incluir el icono en las tab del navegador-->
+<link rel="icon" 
+      type="image/png" 
+      href="imagenes/chopedlogo.png">
+
+<script type="text/javascript">
+
+$ (function (){
+ 
+
+
+
+
+
+
+
+
+//EDITOR DE CÓDIGO
+
+
+
+//array de almacén de editores de código
+var editores=[editor];
+
+
+//mostramos los editores con esta función
+function mostrareditores(editores){
+  var i, divs=""; //prev=""; 
+  for(i=0; i<editores.length; ++i){
+  divs+="<textarea id=\"" +i+ "\"></textarea>";
+ 
+  $("#contenedoreditores").html(editores);
+  
+//también puedes intentar usar un iframe idividual por cada preview de editor... pero de esta manera tenemos más espacio. Además, he encontrado problemas de compatibilidad con la librería zepto.
+  //$("#contenedoriframes").html(prev);
+  // prev+="<iframe id=\"preview"+i+"\></iframe>"
+}
+}
+
+
+//onclick listener usando zepto
+$("#nuevo").on('click', function(){nuevoeditor(editor)});
+
+
+//función que crea el editor de texto
+
+function nuevoeditor(){
+for (i=0; i<editores.length; ++i){
+
+  //creamos el editor de texto mediante la librería codemirror y lo configuramos
+  var editor = CodeMirror.fromTextArea(document.getElementById("codigo"), {
+      lineNumbers: true,
+      mode: "text/html",
+      matchBrackets: true,
+      lineWrapping: true,
+      styleActiveLine: true,
+      rulers:rulers,
+       theme:"solarized light", 
+      autofocus: true,       
+      keyMap:"sublime",
+      extraKeys: {
+        "F11": function (cm) {
+          cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+        },
+        "Esc": function(cm) {
+          if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+        }
+      }
+    });
+  //aquí generamos el preview que se asocia a todos los editores
+     var delay;
+      
+      var nuevocode;
+      
+      
+     editor.on("change", function() {
+            
+
+
+        clearTimeout(delay);
+        delay = setTimeout(updatePreview, 300);
+      });
+      
+      function updatePreview() {
+        var previewFrame = document.getElementById("preview");
+        var preview =  previewFrame.contentDocument ||  previewFrame.contentWindow.document;
+        preview.open();
+        preview.write(editor.getValue());
+        preview.close();
+      }
+       setTimeout(updatePreview, 300);
+ 
+
+  return editores.push(editor);
+  mostrareditores(editores);
+  
+   }
+  }
+//cálculo de distancia para el dibujo de las líneas del editor de texto
+ 
+ var colors = ["#fcc", "#f5f577", "#cfc", "#aff","#cfc", "#f5f577", "#fcc"];
+ var rulers = [], value = "";
+
+ for (var i = 1; i <= 7; i++) {
+    rulers.push({color: colors[i], column: i * 6, lineStyle: "dashed"});
+  }
+
+
+//creamos el clon del editor de código mediante la librería codemirror y lo configuramos con un tema distinto
+    var editor = CodeMirror.fromTextArea(document.getElementById("codigo"), {
+      lineNumbers: true,
+      mode: "text/html",
+      matchBrackets: true,
+      lineWrapping: true,
+      styleActiveLine: true,
+      rulers:rulers,
+      autofocus: true,      
+      keyMap:"sublime",
+      extraKeys: {
+        "F11": function (cm) {
+          cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+        },
+        "Esc": function(cm) {
+          if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+        }
+      }
+    });
+
+
+ var delay;
+      
+      var nuevocode;
+      
+      
+     editor.on("change", function() {
+            
+
+
+        clearTimeout(delay);
+        delay = setTimeout(updatePreview, 300);
+      });
+      
+      function updatePreview() {
+        var previewFrame = document.getElementById("preview");
+        var preview =  previewFrame.contentDocument ||  previewFrame.contentWindow.document;
+        preview.open();
+        preview.write(editor.getValue());
+        preview.close();
+      }
+
+
+//iniciamos el previsualizador     
+setTimeout(updatePreview, 300);
+editores.push(editor);
+
+  
+  
+//boton fullscreen
+
+$("#botonfull").on("click",function(cm){
+  editor.setOption("fullScreen", !editor.getOption("fullScreen"));
+});
+//boton back
+
+$("#botonback").on("click",function(cm){
+  editor.undo();
+
+});
+
+
+
+
+
+
+
+
+
+
+//BUSCADOR
+
+
+//función que inicia el botón de buscar y que crea un nuevo iframe para visionar los links de respuesta
+
+//array que incluirá el logo del editor
+
+ var urls=["imagenes/chopedlogowhite.png"];
+//se puede mejorar el rendimiento y la experiencia de usuario, actualizando sólamente la última url mediante url.pop()--- actualizar en un futuro
+function mostrarbusqueda(urls){
+  var i, iframebusca="";
+  
+   for (i=0; i<urls.length; ++i){
+  iframebusca+="<div><button id=\""+i+ "\" class=\"cerrar\"type=\"button\">x</button><iframe src='" + urls[i] + "'></iframe></div>";
+  $("#contenedorlinks").html(iframebusca);
+  //limpiamos el input terminos para tener mayor comodidad a la hora de realizar las búsquedas
+  $(".terminos").val("");
+
+   }
+}
+
+//onkeyup sobre input para aceptar el retorno de carro en la barra de búsqueda, hecho con zepto
+$(".terminos").bind('keyup', function (e) {
+  var key = e.keyCode || e.which;
+  if (key === 13) {
+    buscar();  
+  }
+
+});
+
+
+//onclick listener usando zepto
+$(".boton").on('click', function(){buscar()});
+
+
+//función quecoloca los términos dentro del buscador seleccionado
+
+function buscar(){
+//sustituimos los espacios por signos más para que sea efectiva la búsqueda por url, si no el buscador no entiende las ordenes y no obtenemos resultado del servidor
+var principiourl, nuevaurl;
+var buscador="bing";
+var buscadores=["https://duckduckgo.com/?q=","https://www.bing.com/search?q=", "http://www.google.com/custom?q="];
+
+//variables  y condicionales para ampliar si es el caso en un futuro con otros buscadores
+ if (buscador==="duckduckgo"){
+     principiourl= buscadores[0];
+}
+
+ if (buscador==="bing"){
+    principiourl= buscadores[1];
+}
+ 
+ if (buscador==="google"){
+    principiourl= buscadores[2];
+ }
+
+var i, a=$('.terminos').val();
+//retiro el relleno de url ya que funciona mejor sin el simbolo +
+//    for (i in a) {
+  //     a=a.replace(" ", "+");
+   // }
+
+    nuevaurl=principiourl+ a;
+    urls.push(nuevaurl);
+    mostrarbusqueda(urls);
+  }
+
+
+//botón cerrar una ventana del buscador
+
+$(".cerrar").live("click", function(){
+
+  //alert(this.id); Usado para probar que funciona
+   urls.splice(this.id,1);
+   mostrarbusqueda(urls);
+
+});
+
+//repetir botón con editores, pero he encontrado problemas con el pintado y almacenamitneo de los codemirror, creo que tiene que ver con la librería. De momento lo he dejado.
+
+
+
+
+//botón que oculta el resultado de las busqueda
+
+$(".marron").on("click", function(){
+     if ($(".marron").val()==="vis"){
+       
+      $("#contenedorlinks").show("slow");
+      $(".marron").val("");
+     }
+     else{
+      $(".marron").val("vis");
+      $("#contenedorlinks").hide("slow");
+       
+     }
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+//CARGA DE ARCHIVOS LOCALES
+
+
+//La solución no es mía, la encontré por internet en un foro, no es muy elegante y no entiendo algunas cosas, la cambiaré en un futuro
+
+
+
+
+function startRead()
+{
+  // obtenemos el input del arbol DOM
+  
+  var file = document.getElementById('file').files[0];
+  if(file)
+  {
+    getAsText(file);
+  }
+}
+
+function getAsText(readFile)
+{
+  var reader;
+  try
+  {
+    reader = new FileReader();
+  }catch(e)
+  {
+    document.getElementById('output').innerHTML = 
+      "Error: seems File API is not supported on your browser";
+    return;
+  }
+  
+  // Leemos el archivo      
+  reader.readAsText(readFile, "UTF-8");
+  
+  // manejamos el proceso, la carga y los errores
+  reader.onprogress = updateProgress;
+  reader.onload = loaded;
+  reader.onerror = errorHandler;
+}
+
+function updateProgress(evt)
+{
+  if (evt.lengthComputable)
+  {
+    // evt.loaded y evt.total son propiedades de  ProgressEvent
+    var loaded = (evt.loaded / evt.total);
+    if (loaded < 1)
+    {
+      //no entiendo muy bien esto, es una barra de carga de archivo. 
+      // Increase the prog bar length
+      // style.width = (loaded * 200) + "px";
+      document.getElementById("bar").style.width = (loaded*100) + "%";
+    }
+  }
+}
+
+function loaded(evt)
+{
+  // Obtenemos los datos leeidos ya cargados    
+  var fileString = evt.target.result;
+
+  document.getElementById('codigo').innerHTML = fileString;
+    nuevoeditor();
+//es una barra para de carga, para subir archivos grandes
+    document.getElementById("bar").style.width = 100 + "%";
+    
+
+}
+function errorHandler(evt)
+{
+  if(evt.target.error.code == evt.target.error.NOT_READABLE_ERR)
+  {
+    // El archivo no se ha leído bien
+    document.getElementById('output').innerHTML = "Error al leer el archivo..."
+  }
+}
+    
+
+$("#file").on("change", function(){
+   document.getElementById("nombrearchivo").value = this.value;   
+   //Con este código se muestra el nombre del archivo cargado desde el sistema de ficheros local.
+  startRead()});
+
+ 
+
+
+
+
+
+
+
+
+
+//GUARDAR CAMBIOS EN ARCHIVO
+
+//falla en explorer
+
+function saveTextAsFile()
+{
+  var textToWrite = editor.getValue();
+  var textFileAsBlob = new Blob([textToWrite], {type:'html'});
+  var fileNameToSaveAs = document.getElementById("nombrearchivo").value;
+
+  var downloadLink = document.createElement("a");
+  downloadLink.download = fileNameToSaveAs;
+  downloadLink.innerHTML = "Download File";
+  if (window.webkitURL != null)
+  {
+    //solución motores webkit
+    // Chrome allows the link to be clicked
+    // without actually adding it to the DOM.
+    downloadLink.href = window.webkitURL.createObjectURL(textFileAsBlob);
+  }
+  else
+  {
+    //Solucion motor GECO 
+    // Firefox requires the link to be added to the DOM
+    // before it can be clicked.
+    downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
+    downloadLink.onclick = destroyClickedElement;
+    downloadLink.style.display = "none";
+    document.body.appendChild(downloadLink);
+  }
+
+  downloadLink.click();
+}
+
+function destroyClickedElement(event)
+{
+  document.body.removeChild(event.target);
+}
+
+
+$("#guardar").on("click", function(){
+  saveTextAsFile();
+});
+
+
+
+
+
+
+
+
+
+//BOTONES ADICIONALES, ELECCIÓN BUSCADOR OCULTAPREVIEW
+
+//botón que esconde el preview  
+
+//implementar en un futuro, xq sigue consumiendo recursos a pesar de no mostrarse por pantalla
+
+$(".botonon").on("click", function(){
+     if ($(".botonon").val()==="vis"){
+       
+      $("#preview").show("slow");
+      $(".botonon").val("");
+     }
+     else{
+      $(".botonon").val("vis");
+      $("#preview").hide("slow");
+       //$("#linea").html(editores);
+     }
+
+});
+
+
+
+
+
+ $(".botonon").val("vis");
+      $("#preview").hide("slow");
+
+//iniciamos el buscador y el editor
+mostrarbusqueda(urls);
+
+mostrareditores(editores);
+});
+
+
+
+</script>
+
+
+
+
+
+<!--//HTML-->
+
+
+
+
+
+
+
+
+<body>
+
+<header>
+<div id="logosleng">
+<h1 class="titulo">Chóped /*</h1>
+
+<div><div id="logobuscador"></div> <input type="text" class="terminos" placeholder="Búsqueda web" value="" /><button class="boton" type="button">Buscar</button><button class="botonon"  type="button" value="">Preview</button>
+<button id="buscador" class="marron" type="button">buscador</button>
+<a class="about" href="./in‌dex.html">About?</a>
+
+</div>
+
+</header>
+
+<section>
+
+
+
+<div class="contenedor">
+ 
+
+<div class="contenedoriframe"><iframe id="preview"></iframe>
+</div>
+
+
+<div id="contenedorlinks"></div>
+
+
+
+</div>
+
+
+<div class="contenedor" id="editoresdetexto">
+ 
+<div id="envoltorioarchivo">
+<span id="cargaboton">Cargar</span>
+<input type="file" id="file" name="files[]" multiple/><output id="output"></output>
+</div>
+<input id="nombrearchivo" placeholder="Nombre proyecto"/>
+<!--posibilita el visionado del archivo subido -->
+
+
+<button id="guardar" type="button">guardar</button>
+<button id="nuevo" type="button">nuevo</button>
+
+
+
+
+
+
+
+
+
+<!--código introducido en el cajetín -->
+<textarea id="codigo" placeholder="Introduce aquí el código html, css o javascript...">
+
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Choped</title>
+</head>
+<h1>Choped</h1>
+<body>
+<p>Lonchas de editores de código, previews y navegación web. Ejecuta HTML, CSS y Javascript. </p>
+<p>Incorpora los atajos de teclado de sublimetext.</p> 
+</body>
+</html></textarea>
+<button id="botonback" type="button">Back</button>
+<button id="botonfull" type="button">Full</button>
+
+
+</div>
+
+
+
+
+
+
+
+
+</section>
+
+</body>
+<!-- LICENCIAS MIT 
+
+
+
+
+
+CHOPED LICENSE..
+Copiright (C) 2014 by Lucas Cerveró Beltrán_LLuc Brell
+  <llucbrell@gmail.com>
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+
+
+
+CODEMIRROR LICENSE.. VISITA codemirror.net son unos cracks
+Copyright (C) 2014 by Marijn Haverbeke <marijnh@gmail.com> and others
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+-->
+
+
+</html>

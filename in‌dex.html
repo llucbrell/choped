@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+
+<head>
+<meta charset="utf-8">
+<title>Choped</title>
+  <link rel="icon" 
+      type="image/png" 
+      href="imagenes/chopedlogo.png">
+  
+  <link id="mimaquetacion" rel="stylesheet" type="text/css" href="editstyle.css">
+  
+<!--Codigo librería zepto, realentiza bastante la ejecución del código-->
+  
+  <script type="text/javascript" src="http://zeptojs.com/zepto.min.js"></script>
+
+</head>
+<style>
+  *{
+    margin:0px;
+    padding:0px;
+  }
+  a{
+    font-family:kahusan;
+    font-size:14px; 
+  }
+  h3, #agradecimiento{ 
+    font-family:kahusan;
+    text-align:center;
+  }
+  .texto{
+  margin:20px;
+  }
+  </style>
+<body>  
+<header>
+<div id="logosleng">
+<h1 class="titulo">Chóped /*</h1>
+
+</div>
+
+  </header> 
+  <div class="texto">
+  <p>Chóped es un editor de código HTML, CSS y Javascript, con licencia MIT que hace uso de las librerías javascript; Codemirror y Zepto. Codemirror es el verdadero motor de este editor, un compendio de código realmente potente y que está especializado en edición de código. Visita su web si quieres saber más.</p></div>
+  <h3>Apuntes</h3>
+  <div class="texto">
+  <ul><li><p>Se puede usar vía web, mediante una de estas dos urls <a href="choped.html">Chóped</a> //<a href="choped_for_search.html">Chóped_for_lotsOf_Search</a> o también en modo local descargando los archivos mediante el siguiente link de <a href="https://drive.google.com/folderview?id=0Byfv06hDrwsydHFZenp5ci1tLWc&usp=sharing">descarga</a></p>
+    <p>Te recominedo el modo local porque siempre podrás trabajar con él y no dependerás de mi flojo servidor.</p></li>
+  <li>Recuerda, está en fase beta y eso implica que aún lo estoy probando. Así que, segurísimo tendrá algún bug o problema. Aunque sirve perféctamente para hacer webApps, puedes trabajar con él, es completamente funcional. Un ejemplo es que este about, está realizado exclusivamente con Chóped.</li>
+    <li>Si te interesa usar otros motores de búsqueda para la web (por defecto Chóped está configurado con Bing) encontrarás más incluidos en el código. He colocado tanto Google como DuckduckGo. Sólo tienes que cambiar el nombre contenido en la variable "buscador". 
+      <p>Google funciona correctamente en modo local, aunque creo que no lo hace desde un servidor https. ¡Son así de majos!</p>
+      <p>DuckduckGo no lo he testeado aún, aunque en un futuro espero convertirlo en el motor por defecto.</p></li>  
+    <li>Chóped es un editor de código que funciona exclusivamente en el lado del cliente. Es decir, funcionará aunque no estés conectado a internet, no romperá nada de tu equipo, ni de tu servidor, en caso de que lo subas para usarlo.</li>
+    <li>He intentado que fuera potente y rápido, aunque todo esto seguro que es muy mejorable. Si resulta que tienes un computador con pocos recursos, o una baja conexión a internet, cambia la librería Zepto por jQuery. Debería bastar con eso para un funcionamiento decente.</li>
+  <li>Si decides usar diferentes archivos para tu código, CSSs o JSs externos al archivo principal, recuerda usar "file:///C:/PATH_COMPLETO" para referenciarlos, así no tendrás problemas con el preview.</li>
+    <li>Si tienes varias lonchas (cajetín) de código abiertas, recuerda que al apretar el botón guardar, sólo se guarda la loncha con el lateral naranja, y que se guarda en tu computadora, en futuras versiones se incluirá el guardado en localstorage, para no perder mortadela.</li>
+    <li>Si pones nombre al proyecto, no olvides incluir la extensión del archivo.. miproyecto.html, mi_proyecto.css, etc,. 
+    <li>Si tienes algún problema, sugeréncia o aportación al proyecto, escríbe a llucbrell@gmail.com</li></ul></div>
+  <div class="texto">
+  <p>Sobretodo esta webApp es producto del aburrimiento ante ciertos trabajos, las ganas de jugar con código, así como de las necesidades que iban apareciendo a la hora de mi aprendizaje. Fue creado en 2014 durante el curso MOOC HTML5 impartido por la Universidad Politécnica de Madrid y presentado para cubrir el módulo 7. Es un buen curso, aunque lo voy a suspender... XD</p>
+  <div>
+  <p id="agradecimiento"><b>Gracias por interesarte en Chóped, el editor a lonchas.</b></p>  
+  </div>
+  </div>
+  <div id="logowrap"><style type="text/css">#logowrap{text-align: center;}</style><img alt="chopedlogo" src="./imagenes/chopedlogowhite.png"/></div>
+</body>
+
+<!-- LICENCIAS MIT 
+
+
+
+
+
+CHOPED LICENSE..
+Copiright (C) 2014 by Lucas Cerveró Beltrán_LLuc Brell
+  <llucbrell@gmail.com>
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+
+
+
+CODEMIRROR LICENSE.. VISITA codemirror.net son unos cracks
+Copyright (C) 2014 by Marijn Haverbeke <marijnh@gmail.com> and others
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+-->
+</html>
